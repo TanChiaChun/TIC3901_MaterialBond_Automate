@@ -31,7 +31,9 @@ def initialise_app(project_name, log_level="INFO"):
     my_log_file.setFormatter(my_log_format)
     logger.addHandler(my_log_file)
 
-def finalise_app():
+def finalise_app(log_message=""):
+    if log_message != "":
+        logger.info(log_message)
     logger.info("App complete running successfully" + LOG_END)
     exit()
 
