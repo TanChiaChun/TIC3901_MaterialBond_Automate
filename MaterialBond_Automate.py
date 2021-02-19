@@ -2,6 +2,7 @@
 import os
 import argparse
 import logging
+from pywinauto import application
 
 # Import from modules
 from MyFunctions import initialise_app, finalise_app, handle_exception
@@ -12,7 +13,7 @@ PROJ_NAME = CURR_FILE.split('.')[0]
 
 # Get command line arguments
 my_arg_parser = argparse.ArgumentParser(description=f"{PROJ_NAME}")
-#my_arg_parser.add_argument("arg1", help="Text1")
+my_arg_parser.add_argument("--app", help="Enter path to application")
 my_arg_parser.add_argument("--log", help="DEBUG to enter debug mode")
 args = my_arg_parser.parse_args()
 
@@ -27,7 +28,7 @@ logger = logging.getLogger("my_logger")
 #     handle_exception("Missing environment variables!")
 
 # Declare variables
-
+app_path = args.app
 
 ##################################################
 # Functions
@@ -37,5 +38,9 @@ logger = logging.getLogger("my_logger")
 ##################################################
 # Main
 ##################################################
+app = application.Application(backend="uia").start(app_path)
+app["Material Bond"]["Serial NumberEdit"].type_keys("SN12345")
+app["Material Bond"]["Material AEdit"].type_keys("PA12345")
+app["Material Bond"]["Material BEdit"].type_keys("PB12345")
 
 finalise_app()
