@@ -2,6 +2,7 @@
 import os
 import argparse
 import logging
+from xml.etree import ElementTree
 from pywinauto import application
 
 # Import from modules
@@ -28,6 +29,8 @@ logger = logging.getLogger("my_logger")
 #     handle_exception("Missing environment variables!")
 
 # Declare variables
+xml_file = "data/input/Mes2Oem_OpStart_SN12345.xml"
+data_dict = {}
 app_path = args.app
 
 ##################################################
@@ -38,9 +41,15 @@ app_path = args.app
 ##################################################
 # Main
 ##################################################
+tree = ElementTree.parse(xml_file)
+root = tree.getroot()
+for child1 in root:
+    for child2 in child1:
+        data_dict[child2.tag] = child2.text
+
 app = application.Application(backend="uia").start(app_path)
-app["Material Bond"]["Serial NumberEdit"].type_keys("SN12345")
-app["Material Bond"]["Material AEdit"].type_keys("PA12345")
-app["Material Bond"]["Material BEdit"].type_keys("PB12345")
+app["Material Bond"]["Serial NumberEdit"].type_keys(data_dict["SerialNumber"])
+app["Material Bond"]["Material AEdit"].type_keys(data_dict["MaterialA"])
+app["Material Bond"]["Material BEdit"].type_keys(data_dict["MaterialB"])
 
 finalise_app()
