@@ -38,7 +38,7 @@ $proj_version = git describe
 if (-not $proj_version) {
     $proj_version = Read-Host "Input project version"
 }
-$exe_name = "$proj_name" + "_v" + "$proj_version.exe"
+$exe_name = "$proj_name" + "_" + "$proj_version.exe"
 
 # Check if folders exist, create if no
 if (-not (Test-Path -Path "pyinstaller") ) {
